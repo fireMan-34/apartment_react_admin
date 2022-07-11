@@ -22,7 +22,7 @@ const frameIn = [
     { path: "index", element: <Home /> },
     { path: "setroom", element: <Room /> },
     { path: "roomlist", element: <RoomList /> },
-    { path: "build", element: <Build /> },
+    { path: "setbuild", element: <Build /> },
     { path: "*", element: <Nofound /> }
 ];
 
