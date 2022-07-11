@@ -1,0 +1,14 @@
+{
+    "plugins": [],
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                //按需加载
+                "useBuiltIns": "usage",
+                // 使用corejs模块化解析
+                "corejs": "3"
+            }
+        ]
+    ]
+}
