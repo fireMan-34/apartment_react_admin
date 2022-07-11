@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setCurMenu } from '../../../hoteladmin/src/store/commonSlice';
 
 import menu from './menu';
 

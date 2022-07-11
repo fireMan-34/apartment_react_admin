@@ -1,5 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import adminReducer from './adminSlice';
+import commonReducer from './commonSlice';
+
 //keep alive
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from "redux-persist";
@@ -9,13 +12,17 @@ const persistConfig = {
     storage,
 }
 
-const store = configureStore({
-    reducer: [
+const persistedAdminReducer = persistReducer(persistConfig, adminReducer);
+const persistedCommonReducer = persistReducer(persistConfig, commonReducer);
 
-    ],
+const store = configureStore({
+    reducer: {
+        admin: persistedAdminReducer,
+        common: persistedCommonReducer,
+    },
     devTools: true,
-    middleware: getComputedStyle => getComputedStyle({
-        serializableCheck: true,
+    middleware: getDefaultMiddleware => getDefaultMiddleware({
+        serializableCheck: false,
     }),
 });
 export default store;
