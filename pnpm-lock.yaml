@@ -9,6 +9,7 @@ specifiers:
   '@vitejs/plugin-react': ^1.3.0
   antd: ^4.21.6
   axios: ^0.27.2
+  babel-preset-react: ^6.24.1
   lodash: ^4.17.21
   react: ^18.0.0
   react-dom: ^18.0.0
@@ -34,6 +35,7 @@ devDependencies:
   '@types/react': 18.0.15
   '@types/react-dom': 18.0.6
   '@vitejs/plugin-react': 1.3.2
+  babel-preset-react: 6.24.1
   sass: 1.53.0
   vite: 2.9.14_sass@1.53.0
   vite-plugin-babel: 1.1.0_2rilzf3tcq4l4vzmxce7wc6gqa
@@ -1480,6 +1482,14 @@ packages:
       - debug
     dev: false
 
+  /babel-helper-builder-react-jsx/6.26.0:
+    resolution: {integrity: sha512-02I9jDjnVEuGy2BR3LRm9nPRb/+Ja0pvZVLr1eI5TYAA/dB0Xoc+WBo50+aDfhGDLhlBY1+QURjn9uvcFd8gzg==}
+    dependencies:
+      babel-runtime: 6.26.0
+      babel-types: 6.26.0
+      esutils: 2.0.3
+    dev: true
+
   /babel-plugin-dynamic-import-node/2.3.3:
     resolution: {integrity: sha512-jZVI+s9Zg3IqA/kdi0i6UDCybUI3aSBLnglhYbSSjKlV7yF1F/5LWv8MakQmvYpnbJDS6fcBL2KzHSxNCMtWSQ==}
     dependencies:
@@ -1520,6 +1530,82 @@ packages:
       '@babel/helper-define-polyfill-provider': 0.3.1_@babel+core@7.18.6
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /babel-plugin-syntax-flow/6.18.0:
+    resolution: {integrity: sha512-HbTDIoG1A1op7Tl/wIFQPULIBA61tsJ8Ntq2FAhLwuijrzosM/92kAfgU1Q3Kc7DH/cprJg5vDfuTY4QUL4rDA==}
+    dev: true
+
+  /babel-plugin-syntax-jsx/6.18.0:
+    resolution: {integrity: sha512-qrPaCSo9c8RHNRHIotaufGbuOBN8rtdC4QrrFFc43vyWCCz7Kl7GL1PGaXtMGQZUXrkCjNEgxDfmAuAabr/rlw==}
+    dev: true
+
+  /babel-plugin-transform-flow-strip-types/6.22.0:
+    resolution: {integrity: sha512-TxIM0ZWNw9oYsoTthL3lvAK3+eTujzktoXJg4ubGvICGbVuXVYv5hHv0XXpz8fbqlJaGYY4q5SVzaSmsg3t4Fg==}
+    dependencies:
+      babel-plugin-syntax-flow: 6.18.0
+      babel-runtime: 6.26.0
+    dev: true
+
+  /babel-plugin-transform-react-display-name/6.25.0:
+    resolution: {integrity: sha512-QLYkLiZeeED2PKd4LuXGg5y9fCgPB5ohF8olWUuETE2ryHNRqqnXlEVP7RPuef89+HTfd3syptMGVHeoAu0Wig==}
+    dependencies:
+      babel-runtime: 6.26.0
+    dev: true
+
+  /babel-plugin-transform-react-jsx-self/6.22.0:
+    resolution: {integrity: sha512-Y3ZHP1nunv0U1+ysTNwLK39pabHj6cPVsfN4TRC7BDBfbgbyF4RifP5kd6LnbuMV9wcfedQMe7hn1fyKc7IzTQ==}
+    dependencies:
+      babel-plugin-syntax-jsx: 6.18.0
+      babel-runtime: 6.26.0
+    dev: true
+
+  /babel-plugin-transform-react-jsx-source/6.22.0:
+    resolution: {integrity: sha512-pcDNDsZ9q/6LJmujQ/OhjeoIlp5Nl546HJ2yiFIJK3mYpgNXhI5/S9mXfVxu5yqWAi7HdI7e/q6a9xtzwL69Vw==}
+    dependencies:
+      babel-plugin-syntax-jsx: 6.18.0
+      babel-runtime: 6.26.0
+    dev: true
+
+  /babel-plugin-transform-react-jsx/6.24.1:
+    resolution: {integrity: sha512-s+q/Y2u2OgDPHRuod3t6zyLoV8pUHc64i/O7ZNgIOEdYTq+ChPeybcKBi/xk9VI60VriILzFPW+dUxAEbTxh2w==}
+    dependencies:
+      babel-helper-builder-react-jsx: 6.26.0
+      babel-plugin-syntax-jsx: 6.18.0
+      babel-runtime: 6.26.0
+    dev: true
+
+  /babel-preset-flow/6.23.0:
+    resolution: {integrity: sha512-PQZFJXnM3d80Vq4O67OE6EMVKIw2Vmzy8UXovqulNogCtblWU8rzP7Sm5YgHiCg4uejUxzCkHfNXQ4Z6GI+Dhw==}
+    dependencies:
+      babel-plugin-transform-flow-strip-types: 6.22.0
+    dev: true
+
+  /babel-preset-react/6.24.1:
+    resolution: {integrity: sha512-phQe3bElbgF887UM0Dhz55d22ob8czTL1kbhZFwpCE6+R/X9kHktfwmx9JZb+bBSVRGphP5tZ9oWhVhlgjrX3Q==}
+    dependencies:
+      babel-plugin-syntax-jsx: 6.18.0
+      babel-plugin-transform-react-display-name: 6.25.0
+      babel-plugin-transform-react-jsx: 6.24.1
+      babel-plugin-transform-react-jsx-self: 6.22.0
+      babel-plugin-transform-react-jsx-source: 6.22.0
+      babel-preset-flow: 6.23.0
+    dev: true
+
+  /babel-runtime/6.26.0:
+    resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
+    dependencies:
+      core-js: 2.6.12
+      regenerator-runtime: 0.11.1
+    dev: true
+
+  /babel-types/6.26.0:
+    resolution: {integrity: sha512-zhe3V/26rCWsEZK8kZN+HaQj5yQ1CilTObixFzKW1UWjqG7618Twz6YEsCnjfg5gBcJh02DrpCkS9h98ZqDY+g==}
+    dependencies:
+      babel-runtime: 6.26.0
+      esutils: 2.0.3
+      lodash: 4.17.21
+      to-fast-properties: 1.0.3
     dev: true
 
   /binary-extensions/2.2.0:
@@ -1622,6 +1708,12 @@ packages:
     dependencies:
       browserslist: 4.21.1
       semver: 7.0.0
+    dev: true
+
+  /core-js/2.6.12:
+    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
+    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+    requiresBuild: true
     dev: true
 
   /csstype/3.1.0:
@@ -2058,7 +2150,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: false
 
   /loose-envify/1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -2762,6 +2853,10 @@ packages:
     resolution: {integrity: sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==}
     dev: true
 
+  /regenerator-runtime/0.11.1:
+    resolution: {integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==}
+    dev: true
+
   /regenerator-runtime/0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
 
@@ -2878,6 +2973,11 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+    dev: true
+
+  /to-fast-properties/1.0.3:
+    resolution: {integrity: sha512-lxrWP8ejsq+7E3nNjwYmUBMAgjMTZoTI+sdBOpvNyijeDLa29LUn9QaoXAHv4+Z578hbmHHJKZknzxVtvo77og==}
+    engines: {node: '>=0.10.0'}
     dev: true
 
   /to-fast-properties/2.0.0:
