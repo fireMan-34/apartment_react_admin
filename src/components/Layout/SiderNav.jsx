@@ -15,6 +15,7 @@ export default function SiderNav() {
     const subMenu = commonMenu.menu.find(({ name }) => name === commonMenu.curMenu)?.children || [];
 
     const items = getTransformMenu(subMenu);
+
     const onClick = ({ key }) => {
         const { url } = subMenu.find(subMenuItem => subMenuItem.name === key);
         navigate(url);

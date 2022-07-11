@@ -20,9 +20,13 @@ export default function HeaderNav() {
 
     const items = getTransformMenu(menu);
 
+    console.log(menu);
+
     const clickItems = useCallback(({ key }) => {
         dispatch(setCurMenu(key));
+
         const urlOrNull = menu.find(menuItem => menuItem.name === key).url || null;
+
         urlOrNull && urlOrNull !== location.pathname && naviagte(urlOrNull);
     }, [menu, curMenu, admin, location]);
 
