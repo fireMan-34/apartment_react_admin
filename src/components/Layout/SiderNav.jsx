@@ -12,7 +12,7 @@ export default function SiderNav() {
     const commonMenu = useSelector(state => state.common);
     const navigate = useNavigate();
 
-    const subMenu = commonMenu.menu.find(({ name }) => name === commonMenu.curMenu.curMenu)?.children || [];
+    const subMenu = commonMenu.menu.find(({ name }) => name === commonMenu.curMenu)?.children || [];
 
     const items = getTransformMenu(subMenu);
     const onClick = ({ key }) => {

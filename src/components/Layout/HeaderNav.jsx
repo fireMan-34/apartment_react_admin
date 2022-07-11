@@ -15,7 +15,9 @@ export default function HeaderNav() {
 
     const items = getTransformMenu(menu);
 
-    const clickItems = ({ key }) => dispatch(setCurMenu({ curMenu: key }));
+    const clickItems = ({ key }) => {
+        dispatch(setCurMenu(key));
+    };
 
     return (
         <div className='headerNav'>
