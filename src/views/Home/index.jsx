@@ -3,6 +3,6 @@ import ContentLayout from '../../components/ContentLayout';
 
 export default function index() {
     return (
-        <ContentLayout title={"Home"} />
+        <ContentLayout Com={<div>Home</div>} />
     )
 }

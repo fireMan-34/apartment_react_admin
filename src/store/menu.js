@@ -8,7 +8,7 @@ export default [
         children: [
             { name: "房型维护", url: "/setroom" },
             { name: "楼栋楼层", url: "/setbuild" },
-            { name: "房间管理", url: "/rootlis" }
+            { name: "房间管理", url: "/roomlist" }
         ]
     }
 ];

@@ -1,7 +1,8 @@
 import React from 'react'
+import ContentLayout from '../../components/ContentLayout'
 
 export default function Build() {
     return (
-        <div>Build</div>
+        <ContentLayout Com={<div>Build</div>} />
     )
 }
