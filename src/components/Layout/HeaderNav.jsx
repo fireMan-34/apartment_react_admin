@@ -4,12 +4,7 @@ import { Menu, Avatar } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurMenu } from '../../store/commonSlice';
 
-const getTransformMenu = (menu) => menu?.map(({ name, url, children }) => ({
-    label: name,
-    key: name,
-    url: url || '',
-    // children: getTransformMenu(children)
-}));
+import { getTransformMenu } from './commonFn';
 
 export default function HeaderNav() {
     const menu = useSelector(state => state.common.menu);
@@ -21,8 +16,6 @@ export default function HeaderNav() {
     const items = getTransformMenu(menu);
 
     const clickItems = ({ key }) => dispatch(setCurMenu({ curMenu: key }));
-
-    console.log(curMenu || 'null');
 
     return (
         <div className='headerNav'>
