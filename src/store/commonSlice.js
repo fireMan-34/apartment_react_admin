@@ -15,6 +15,7 @@ export const commonSlice = createSlice({
             state.menu = action.payload;
         },
         setCurMenu(state, action) {
+            console.log("state aciton");
             state.curMenu = action.payload;
         }
     }
