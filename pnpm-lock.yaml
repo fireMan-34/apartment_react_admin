@@ -15,6 +15,7 @@ specifiers:
   react-dom: ^18.0.0
   react-redux: ^8.0.2
   redux: ^4.2.0
+  redux-persist: ^6.0.0
   sass: ^1.53.0
   vite: ^2.9.9
   vite-plugin-babel: ^1.1.0
@@ -28,6 +29,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-redux: 8.0.2_rxpulxqxsibgdk5rs4llgxl6gy
   redux: 4.2.0
+  redux-persist: 6.0.0_react@18.2.0+redux@4.2.0
 
 devDependencies:
   '@babel/core': 7.18.6
@@ -2774,6 +2776,19 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /redux-persist/6.0.0_react@18.2.0+redux@4.2.0:
+    resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
+    peerDependencies:
+      react: '>=16'
+      redux: '>4.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      redux: 4.2.0
+    dev: false
 
   /redux-thunk/2.4.1_redux@4.2.0:
     resolution: {integrity: sha512-OOYGNY5Jy2TWvTL1KgAlVy6dcx3siPJ1wTq741EPyUKfn6W6nChdICjZwCd0p8AZBs5kWpZlbkXW2nE/zjUa+Q==}
