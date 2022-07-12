@@ -21,7 +21,7 @@ const LayoutCom = () => {
                 <HeaderNav />
             </Header>
             <Content>
-                <Suspense fallback={Loading}>
+                <Suspense fallback={<Loading />}>
                     <Outlet />
                 </Suspense>
             </Content>
