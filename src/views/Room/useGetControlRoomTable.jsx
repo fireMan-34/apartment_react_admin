@@ -1,33 +1,64 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { Button, Drawer, Table, } from "antd";
+import { Button, Drawer, Table, message } from "antd";
 
 import SimpleFormCreator from '../../components/SimpleFormCreator';
 import { FormItems, FormItemDefaultValues } from './commonFn';
 
+import { getAllType, editType, delType } from '../../api/roomType';
+
 const curryButton = ({ name, click }) => <Button type="dashed" size="small" onClick={click}>{name}</Button>
 
 
-export default function useGetControlRoomTable(params) {
+export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
 
     const [data, setData] = useState([]);
+    // const [isLoading, setIsLoading] = useState(false);
     const [IsOpen, setIsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
     const [formData, setFormData] = useState({});
-
     const onClose = () => setIsOpen(v => false);
 
-    const deleteColum = useCallback((record) => {
-        // console.log("数据", data);??
+    const getAllTypeRequest = async () => {
+        try {
+            setIsLoading(true);
+            const { data, success, info, count } = await getAllType();
+            const TableData = data.map(o => ({ key: o._id, ...o }));
+            setData(TableData);
+            setIsLoading(false);
+            message.info(info);
+        } catch (err) {
 
-        const AfterDeleteData = data.filter(({ key }) => key === record.key);
-        setData(AfterDeleteData);
-    });
+        }
+    };
+    const editTypeRequest = async (sendData) => {
+        if (isLoading) {
+            message.info("请求占用中,稍后再尝试");
+            return;
+        }
+        setIsLoading(true);
+        const { success, info } = await editType({ typeid: sendData._id, ...sendData });
+        message.info(info);
+        setIsLoading(false);
+        setIsOpen(false);
+        await getAllTypeRequest();
+    }
+
+    const deleteColum = useCallback(async (record) => {
+        setIsLoading(true);
+        const { success, info } = await delType({ typeid: record._id });
+        setIsLoading(false);
+        message.info(info);
+        if (!success) {
+            return
+        }
+        else {
+            await getAllTypeRequest();
+        }
+    }, []);
     const modifyColum = useCallback(record => {
         setIsOpen(v => true);
         setFormData(v => record);
     }, [data]);
-
     const [colums] = useState(
         [
             {
@@ -77,41 +108,15 @@ export default function useGetControlRoomTable(params) {
         ]
     );
 
-
     useEffect(() => {
+        getAllTypeRequest();
+    }, []);
 
-        const dataSource = [
-            {
-                key: 1,
-                name: '单人房',
-                beds: 1,
-                price: 100,
-                yaPrice: 20,
-                shortName: '单',
-                liveLimit: 1,
-                couponNum: 1,
-
-            },
-            {
-                key: 2,
-                name: '双人房',
-                beds: 2,
-                price: 150,
-                yaPrice: 20,
-                shortName: '双',
-                liveLimit: 2,
-                couponNum: 2,
-
-            }
-        ];
-        setData(v => dataSource);
-        setIsLoading(v => false);
-
-    }, [])
     return {
         Room_Table: (<Table dataSource={data} columns={colums} loading={isLoading}></Table>),
         Room_Update_Form: (<Drawer visible={IsOpen} onClose={onClose}>
-            <SimpleFormCreator title={"更新房间"} formItems={FormItems} defaultValues={{ ...FormItemDefaultValues, formData }} initialValues={formData} />
-        </Drawer>)
+            <SimpleFormCreator title={"更新房间"} formItems={FormItems} defaultValues={{ ...FormItemDefaultValues, ...formData }} initialValues={formData} finishFn={editTypeRequest} />
+        </Drawer>),
+        Renew_Data: getAllTypeRequest
     }
 };

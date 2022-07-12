@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './index.scss'
 
 import { Divider } from 'antd';
@@ -10,8 +10,9 @@ import useGetControlRoomTable from './useGetControlRoomTable';
 const curryDiver = ({ text }) => (<Divider>{text}</Divider>);
 
 export default function Room() {
-    const { Room_Button, Room_Drawer } = useGetCreateRoomCom();
-    const { Room_Table, Room_Update_Form } = useGetControlRoomTable();
+    const [isLoading, setIsLoading] = useState(false);
+    const { Room_Table, Room_Update_Form, Renew_Data } = useGetControlRoomTable({ isLoading, setIsLoading });
+    const { Room_Button, Room_Drawer } = useGetCreateRoomCom({ isLoading, setIsLoading, Renew_Data });
     return (
         <ContentLayout Com={
             <div className='roomContent'>

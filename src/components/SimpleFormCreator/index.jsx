@@ -58,10 +58,11 @@ const generateFormChildren = (type, args) => {
     return formTypeNode[type](args);
 }
 
-export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues }) {
+export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn }) {
     const [form] = Form.useForm();
     const onFinish = useCallback((values) => {
-        console.log(assignInWith(values, defaultValues, (ov, sv) => isUndefined(ov) ? sv : ov));
+        const sendData = assignInWith(values, defaultValues, (ov, sv) => isUndefined(ov) ? sv : ov);
+        finishFn(sendData);
     }, []);
 
     useEffect(() => {

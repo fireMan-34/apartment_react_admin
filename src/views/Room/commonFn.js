@@ -45,7 +45,7 @@ export const FormItems = [
     },
     {
         label: "押金",
-        name: "yaprice",
+        name: "yaPrice",
         type: formType.INPUT,
         args: {
             placeholder: "填写押金"
@@ -55,6 +55,9 @@ export const FormItems = [
         label: "早餐券",
         name: "couponNum",
         type: formType.INPUT_NUMBER,
+        args: {
+            min: 0,
+        }
     }
 
 ]
@@ -62,5 +65,5 @@ export const FormItems = [
 export const FormItemDefaultValues = {
     "liveLimit": 1,
     "beds": 1,
-    "yaprice": "无"
+    "yaPrice": "无"
 }

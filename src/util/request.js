@@ -32,7 +32,6 @@ class Request {
         this.instance.interceptors.request.use(
             req => {
                 console.log('全局亲求拦截');
-                console.log(req, config);
                 return req;
             },
             error => error
@@ -53,7 +52,6 @@ class Request {
             })
     }
     request(config) {
-        console.log(config, "config");
         return this.instance.request(config);
     }
 };
