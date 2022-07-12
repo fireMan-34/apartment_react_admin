@@ -7,6 +7,8 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './routes';
 
+console.log(import.meta.env.VITE_BASE_URL);
+
 function App() {
   return (
     <Provider store={store}>
