@@ -1,5 +1,5 @@
-import { simpleRequest } from '../util/request';
+import { simpleRequest, METHOD_TYPE } from '../util/request';
 
-const getAllType = simpleRequest({ method: "post", url: "roomType/getAll", })
+const getAllType = (config = {}) => simpleRequest.request({ url: "/room/getAll", method: METHOD_TYPE.post, ...config });
 
 export { getAllType }
