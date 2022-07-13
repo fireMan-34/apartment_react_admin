@@ -1,7 +1,7 @@
 {
   "name": "apartment_react_admin",
   "private": true,
-  "version": "0.5.4",
+  "version": "0.6.1",
   "author": {
     "email": "13422484167@163.com",
     "name": "fireman-34"
@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "vite --mode dev",
     "build": "vite build --mode build",
-    "preview": "vite preview --mode preview"
+    "preview": "vite preview --mode preview",
+    "api": "node script/apiGenerate.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
