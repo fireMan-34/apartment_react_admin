@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { message, } from 'antd';
 
 import './index.scss';
@@ -38,10 +38,10 @@ export default function Build() {
         getBuilds();
     }, []);
 
-    const addBulid = useCallback(async (form) => {
-
+    const addBulidName = useCallback(async (form) => {
+        console.log(form);
     }, []);
-    const editBuild = useCallback(() => {
+    const editBuildName = useCallback(() => {
 
     }, []);
 
@@ -62,7 +62,8 @@ export default function Build() {
                 title={"noname"}
                 isOpen={formState.isOpen}
                 onCancel={closeForm}
-                defaultValues={formState.editMode === FORM_OPEN_MODE.ADD ? {} : { name: builds[showBuildIndex]?.name }} />
+                defaultValues={formState.editMode === FORM_OPEN_MODE.ADD ? {} : { name: builds[showBuildIndex]?.name }}
+            />
         </div>} />
     )
 }
