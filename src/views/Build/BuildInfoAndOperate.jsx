@@ -5,7 +5,7 @@ import DelAlertPopconfirm from '../../components/DelAlertPopconfirm';
 const curryButton = (text, clickFn) => {
     return <Button type='primary' onClick={clickFn} size="small">{text}</Button>
 };
-const BuildInfoAndOperate = ({ build = {}, builds, addFloor, editAndOpenForm, delBuild, isLoading }) => {
+const BuildInfoAndOperate = ({ build = {}, builds, addFloor, editAndOpenForm, editAndOpenFloorInfoForm, delBuild, isLoading }) => {
     const buildName = build?.name || "楼信息";
     const buildCounts = builds?.length || 0;
     const buildFloorCounts = build.floorInfo?.length || 0;
@@ -15,8 +15,8 @@ const BuildInfoAndOperate = ({ build = {}, builds, addFloor, editAndOpenForm, de
             title={buildName}
             actions={
                 [
-                    curryButton("增加楼层", addFloor),
-                    curryButton("修改楼层名", editAndOpenForm),
+                    curryButton("增加楼层", editAndOpenFloorInfoForm),
+                    curryButton("修改楼栋名", editAndOpenForm),
                     <DelAlertPopconfirm Com={curryButton("删除")} onConfirm={delBuild} />
                 ]}
             hoverable>

@@ -5,7 +5,7 @@ import SimpleFormCreator from '../../components/SimpleFormCreator';
 
 import { Observe, Observer } from '../../util';
 
-export default function BuildModel({ isOpen, onCancel, title, defaultValues, formItems }) {
+export default function BuildModel({ isOpen, onCancel, title, defaultValues, formItems, submitFn }) {
     const [observe, setObserve] = useState(new Observe(Observe.OBSERVE_TYPE.pull));
     const [observer, setObserver] = useState(new Observer());
     const onOk = useCallback(() => observer.request(), []);
@@ -13,6 +13,7 @@ export default function BuildModel({ isOpen, onCancel, title, defaultValues, for
     useEffect(() => {
         observer.addRequest(form => {
             console.log(form);
+            submitFn(form);
         });
         observe.addObserver(observer);
         return () => {

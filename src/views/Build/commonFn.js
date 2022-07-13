@@ -14,18 +14,18 @@ const addBuildNameFormItems = [
 
 const editBuildNameFormItems = addBuildNameFormItems;
 
-const addFloorInfoNameItems = [
+const editFloorInfoNameItems = [
     {
         label: "楼层名",
         name: "floorName",
         rules: [rules.required,],
         type: formType.INPUT,
         args: {
-            placeholder: "填写楼栋名"
+            placeholder: "填写楼层名"
         }
     },
 ]
 
 export {
-    addBuildNameFormItems, editBuildNameFormItems, addFloorInfoNameItems
+    addBuildNameFormItems, editBuildNameFormItems, editFloorInfoNameItems
 }
