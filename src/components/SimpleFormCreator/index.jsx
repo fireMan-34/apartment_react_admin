@@ -59,7 +59,7 @@ const generateFormChildren = (type, args) => {
     return formTypeNode[type](args);
 }
 
-export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn }) {
+export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn, custtomizeFinish = false, custtomizeFinishFn = form => { } }) {
     const [form] = Form.useForm();
     const onFinish = useCallback((values) => {
         const sendData = assignInWith(values, defaultValues, (ov, sv) => isUndefined(ov) ? sv : ov);
@@ -79,9 +79,9 @@ export default function SimpleFormCreator({ defaultValues = {}, title, formItems
             <hr />
             {formItems.map(({ label, name, rules, type, args }) => <Form.Item key={label + name} label={label} name={name} rules={rules}>{generateFormChildren(type, args)}</Form.Item>)}
             <Divider>分割</Divider>
-            <Form.Item>
+            {!custtomizeFinish && <Form.Item>
                 <Button type='primary' htmlType='submit'>提交</Button>
-            </Form.Item>
+            </Form.Item>}
         </Form>
     )
 };

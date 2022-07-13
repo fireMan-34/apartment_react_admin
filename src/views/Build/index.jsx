@@ -4,7 +4,10 @@ import { Button, Card, Statistic, Row, Col, message } from 'antd';
 import './index.scss';
 import ContentLayout from '../../components/ContentLayout';
 import DelAlertPopconfirm from '../../components/DelAlertPopconfirm';
+import BuildModel from './BuildModel';
+
 import { getAllBuild } from '../../api/build';
+import { Observe, Observer } from '../../util';
 
 const curryButton = (text, clickFn) => {
     return <Button type='primary' onClick={clickFn} size="small">{text}</Button>
@@ -39,6 +42,7 @@ const BuildInfoAndOperate = ({ build = {}, builds, addFloor, editeBuild, delBuil
         </Card>
     )
 }
+
 
 export default function Build() {
     const [isLoading, setIsLoading] = useState(false);

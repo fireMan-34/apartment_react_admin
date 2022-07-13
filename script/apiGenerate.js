@@ -2,10 +2,10 @@ const fsp = require('fs/promises');
 const path = require('path');
 const { apiPath } = require('./config');
 
-const chineseInfoStr = "临时"
-const postfixStr = "Temp";
-const postfixApi = "Temp";
-const fileName = "Temp.js";
+const chineseInfoStr = "楼栋"
+const postfixStr = "Build";
+const postfixApi = "build";
+const fileName = "build.js";
 
 
 
