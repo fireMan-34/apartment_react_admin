@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Button, Drawer, Table, message, Popconfirm } from "antd";
 
 import SimpleFormCreator from '../../components/SimpleFormCreator';
+import DelAlertPopconfirm from '../../components/DelAlertPopconfirm';
 import { FormItems, FormItemDefaultValues } from './commonFn';
 
 import { getAllType, editType, delType } from '../../api/roomType';
@@ -101,9 +102,7 @@ export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
                 render: (_, record) => (
                     <div className="buttonFlex" >
                         {curryButton({ name: "修改", click: () => modifyColum(record) })}
-                        <Popconfirm title="请问是否要执行删除，这是不可逆操作，请谨慎执行。" okText="确定" cancelText="取消" onConfirm={() => deleteColum(record)}>
-                            {curryButton({ name: "删除", })}
-                        </Popconfirm>
+                        <DelAlertPopconfirm Com={curryButton({ name: "删除" })} onConfirm={() => deleteColum(record)} />
                     </div>
                 )
             }
