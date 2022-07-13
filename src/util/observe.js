@@ -75,6 +75,7 @@ class Observe {
         this.Observers.delete(observer);
     }
     destory() {
+        this.data = null;
         this.Observers.forEach(observer => observer.destory());
         this.Observers.clear();
     }

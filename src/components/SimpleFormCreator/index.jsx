@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Button, Divider, Form, Input, InputNumber } from 'antd';
+import { Observe } from '../../util';
 
 import assignInWith from 'lodash/assignInWith';
 import isUndefined from 'lodash/isUndefined';
@@ -59,12 +60,32 @@ const generateFormChildren = (type, args) => {
     return formTypeNode[type](args);
 }
 
-export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn, custtomizeFinish = false, custtomizeFinishFn = form => { } }) {
+export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn, customizeFinish = false, customizeObserve }) {
     const [form] = Form.useForm();
     const onFinish = useCallback((values) => {
         const sendData = assignInWith(values, defaultValues, (ov, sv) => isUndefined(ov) ? sv : ov);
         finishFn(sendData);
     }, []);
+
+    useEffect(() => {
+        const checkcustomizeObserver = () => {
+            if (customizeFinish && !customizeObserve instanceof Observe) {
+                throw new TypeError('customizeObserve must be extend Observe');
+            };
+        }
+        checkcustomizeObserver();
+        return () => {
+            //没必要销毁，创建主体不属于它
+            // if (customizeFinish) {
+            //     customizeObserve.destory();
+            // }
+        }
+    }, []);
+    useEffect(() => {
+        if (customizeFinish) {
+            customizeObserve.setData(form);
+        };
+    }, [form]);
 
     useEffect(() => {
         form.setFieldsValue(defaultValues);
@@ -79,7 +100,7 @@ export default function SimpleFormCreator({ defaultValues = {}, title, formItems
             <hr />
             {formItems.map(({ label, name, rules, type, args }) => <Form.Item key={label + name} label={label} name={name} rules={rules}>{generateFormChildren(type, args)}</Form.Item>)}
             <Divider>分割</Divider>
-            {!custtomizeFinish && <Form.Item>
+            {!customizeFinish && <Form.Item>
                 <Button type='primary' htmlType='submit'>提交</Button>
             </Form.Item>}
         </Form>
