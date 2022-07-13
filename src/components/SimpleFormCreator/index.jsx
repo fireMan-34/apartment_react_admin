@@ -26,7 +26,8 @@ export const rules = {
     required: { required: true },
     string: { type: "string" },
     number: { type: "number" },
-    stringAndNmber: { type: ["string,number"] }
+    stringAndNmber: { type: ["string,number"] },
+    stringMustNmber: { type: "string", pattern: /^\d+(.\d+)?$/, message: "输入字符串必须是数字类型且不包含任何运算符号" }
 }
 
 export const initValues = {
