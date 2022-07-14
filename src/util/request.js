@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { message } from 'antd';
 
 const METHOD_TYPE = {
     get: "get",
@@ -63,4 +64,28 @@ const simpleRequest = new Request({
 
     // interceptors: new interceptors({}),
 });
-export { METHOD_TYPE, interceptors, Request, simpleRequest };
+
+const commonRequest = async (
+    loadingState = { isLoading, setIsLoading, },
+    orginDataTransformToRequest = {
+        request: (data, config) => { },
+        data,
+        config: {},
+    }
+) => {
+    const { isLoading, setIsLoading } = loadingState;
+    if (isLoading) {
+        message.info("正在上传数据请稍后尝试");
+        return;
+    }
+    setIsLoading(true);
+    const { request, data, config = {} } = orginDataTransformToRequest;
+    ;
+    const { success, info, ...successRequestObj } = await request(data, config);
+    message.info(info);
+    if (!success) return;
+    setIsLoading(false);
+    return successRequestObj;
+}
+
+export { METHOD_TYPE, interceptors, Request, simpleRequest, commonRequest };

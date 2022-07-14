@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { message, } from 'antd';
 import pick from 'lodash/pick';
 
@@ -10,6 +10,7 @@ import BuildModel from './BuildModel';
 
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { getAllBuild, addBuild, editBuild } from '../../api/build';
+import { commonRequest } from '../../util/request';
 import { buildNameFormItems, floorInfoNameItems } from './commonFn';
 
 const FORM_TYPE = {
@@ -28,40 +29,40 @@ export default function Build() {
     }, [builds]);
 
     const getBuilds = useCallback(async () => {
-        setIsLoading(true);
-        const { count, data, info, success } = await getAllBuild();
-        setIsLoading(false);
-        message.info(info);
-        if (!success) {
-            return;
-        }
+        const { data } = await commonRequest({ isLoading, setIsLoading }, {
+            request: getAllBuild,
+            dataTransform: () => { },
+        });
         setBuilds(data);
-    }, []);
-    const sendAddBuild = useCallback(async (form) => {
+    }, [isLoading]);
+    const sendAddBuild = useCallback(async (form, closeForm) => {
         const data = form.getFieldsValue();
-        setIsLoading(true);
-        const { success, info } = await addBuild(data);
-        message.info(info);
-        setIsLoading(false);
-        if (!success) return;
+        await commonRequest(
+            { isLoading, setIsLoading },
+            {
+                request: addBuild,
+                data,
+            });
         await getBuilds();
         closeForm();
-    }, []);
-    const sendEditBuild = useCallback(async (form) => {
+    }, [isLoading,]);
+    const sendEditBuild = useCallback(async (form, closeForm) => {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
         const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, ["buildid", "name", "floorInfo", "__v"]);
-        console.log(wantBuildData);
-        await editBuild(wantBuildData);
-    }, [builds, showBuildIndex]);
+        await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        await getBuilds();
+        closeForm();
+    }, [builds, showBuildIndex, isLoading]);
 
     const sendEditFloor = useCallback(async (form) => {
 
     }, [builds, showBuildIndex]);
 
     const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
-        formState => {
+        (formState, actions) => {
             const { isOpen, editMode, formType } = formState;
+            const { closeForm, addAndOpenForm, editAndOpenForm } = actions;
             if (isOpen === false) {
                 return {
                     initialValues: {},
@@ -75,7 +76,7 @@ export default function Build() {
                     return {
                         initialValues: {},
                         formItems: buildNameFormItems,
-                        submitFn: sendAddBuild,
+                        submitFn: (...args) => sendAddBuild(...args, closeForm),
                     }
                 }
             }

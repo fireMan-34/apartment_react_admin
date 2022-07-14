@@ -39,20 +39,23 @@ const formReducer = (state, action) => {
  * formRef:{isOpen:boolean:editMode:"ADD"|"EDIT",formType:string,...}
  * }}
  */
-const useFormMode = (callback = formState => { }) => {
+const useFormMode = (callback = (formState, actins) => { }) => {
     const [formState, disPatchFormState] = useReducer(formReducer, initFormState);
     const [cbState, setState] = useState(formState);
+    const [actins] = useState({
+        closeForm: () => disPatchFormState({ type: FORM_ACTION.CLOSE }),
+        addAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.ADD_AND_OPEN, formType }),
+        editAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.EDIT_AND_OPEN, formType }),
+    });
     useEffect(() => {
         setState({
             ...formState,
-            ...callback(formState),
+            ...callback(formState, actins),
         });
     }, [formState]);
     return {
         formState,
-        closeForm: () => disPatchFormState({ type: FORM_ACTION.CLOSE }),
-        addAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.ADD_AND_OPEN, formType }),
-        editAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.EDIT_AND_OPEN, formType }),
+        ...actins,
         formRef: cbState,
 
     }
