@@ -18,6 +18,7 @@ const FORM_TYPE = {
     BUILD_NAME: "BUILD_NAME",
     BUILD_FLOOR_INFO: "BUILD_FLOOR_INFO",
 }
+const allowKeys = ["buildid", "name", "floorInfo", "__v"];
 
 export default function Build() {
     const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +52,7 @@ export default function Build() {
     const sendEditBuild = useCallback(async (form, closeForm) => {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
-        const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, ["buildid", "name", "floorInfo", "__v"]);
+        const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, allowKeys);
         const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
         if (!ret) return;
         await getBuilds();
@@ -61,8 +62,8 @@ export default function Build() {
     const sendEditFloor = useCallback(async (form, closeForm) => {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
-        const wantBuildData = pick({ ...beforeBuildData, buildid: beforeBuildData._id, floorInfo: [...beforeBuildData.floorInfo, formData.floorName] });
-        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        const wantBuildData = pick({ ...beforeBuildData, buildid: beforeBuildData._id, floorInfo: [...beforeBuildData.floorInfo, formData.floorName] }, allowKeys);
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData, request: editBuild });
         if (!ret) return;
         await getBuilds();
         closeForm();
@@ -95,16 +96,14 @@ export default function Build() {
                     return {
                         initialValues: builds[showBuildIndex],
                         formItems: buildNameFormItems,
-                        submitFn: sendEditBuild
+                        submitFn: (...args) => sendEditBuild(...args, closeForm)
                     }
                 }
                 if (formType === FORM_TYPE.BUILD_FLOOR_INFO) {
                     return {
                         initialValues: {},
                         formItems: floorInfoNameItems,
-                        submitFn: () => {
-                            console.log(`hello`);
-                        }
+                        submitFn: (...args) => sendEditFloor(...args, closeForm)
                     }
                 }
             }
