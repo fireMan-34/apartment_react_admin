@@ -45,7 +45,12 @@ export default function RoomList() {
             { request: getAllBuild });
         if (!ret) return Promise.reject({ tryFn: getAllRoomWithEffect });
         const { data } = ret;
-        setBuilds(data);
+        const builds = data.map(item => ({
+            label: item.name,
+            value: item._id,
+            children: item.floorInfo.map(it => ({ label: it, value: it }))
+        }));
+        setBuilds(builds);
         return Promise.resolve(data);
     }, []);
     const getTypesWithEffect = useCallback(async () => {
@@ -53,7 +58,8 @@ export default function RoomList() {
             { request: getAllType });
         if (!ret) return Promise.reject({ tryFn: getAllRoomWithEffect });
         const { data } = ret;
-        setBuilds(data);
+        const types = data.map(item => ({ label: item.name, value: item._id }));
+        setTypes(types);
         return Promise.resolve(data);
     }, [])
     useEffect(() => {
@@ -74,7 +80,29 @@ export default function RoomList() {
     }, []);
 
 
-    const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode();
+    const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
+        (formState, actions) => {
+            const { isOpen, editMode, formType } = formState;
+            const { closeForm, addAndOpenForm, editAndOpenForm } = actions;
+            if (isOpen === false) return {
+                initialValues: {},
+                formItems: {},
+            };
+            if (editMode === FORM_OPEN_MODE.ADD) return {
+                initialValues: {},
+                formItems: roomItems.map(roomItem => {
+                    const { label } = roomItem;
+                    switch (label) {
+                        case "所在楼栋楼层":
+                            return { ...roomItem, args: { ...roomItem.args, options: builds } };
+                        case "选择房型":
+                            return { ...roomItem, args: { ...roomItem.args, options: types } };
+                        default: return roomItem;
+                    }
+                }),
+            }
+        }
+    );
     const openRoomFormClick = useCallback(() => addAndOpenForm(FORM_TYPE.ROOM), []);
     return (
         <ContentLayout Com={<div>
@@ -83,7 +111,7 @@ export default function RoomList() {
                 <Table columns={columnsMemo} dataSource={roomDataMapKey} />
             </Space>
             <Drawer visible={formRef.isOpen} onClose={() => closeForm()}>
-                {hasfirstLoading ? <SimpleFormCreator formItems={roomItems} /> : <Skeleton active />}
+                {hasfirstLoading ? <SimpleFormCreator formItems={formRef.formItems} /> : <Skeleton active />}
             </Drawer>
         </div>} />
     )
