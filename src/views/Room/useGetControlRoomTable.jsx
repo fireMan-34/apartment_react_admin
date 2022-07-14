@@ -40,6 +40,7 @@ export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
         const { success, info } = await editType({ typeid: sendData._id, ...sendData });
         message.info(info);
         setIsLoading(false);
+        if (!success) return;
         setIsOpen(false);
         await getAllTypeRequest();
     }
@@ -116,7 +117,7 @@ export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
     return {
         Room_Table: (<Table dataSource={data} columns={colums} loading={isLoading}></Table>),
         Room_Update_Form: (<Drawer visible={IsOpen} onClose={onClose}>
-            <SimpleFormCreator title={"更新房间"} formItems={FormItems} defaultValues={{ ...FormItemDefaultValues, ...formData }} initialValues={formData} finishFn={editTypeRequest} />
+            <SimpleFormCreator title={"更新房间"} formItems={FormItems} initialValues={{ ...FormItemDefaultValues, ...formData }} finishFn={editTypeRequest} />
         </Drawer>),
         Renew_Data: getAllTypeRequest
     }

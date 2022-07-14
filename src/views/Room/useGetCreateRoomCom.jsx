@@ -26,7 +26,7 @@ const useGetCreateRoomCom = ({ setIsLoading, Renew_Data }) => {
     return {
         Room_Button: <Button type="dashed" onClick={open}>创建新房间</Button>,
         Room_Drawer: <Drawer title="createRoomInfo" placement='right' visible={IsOpen} onClose={close}>
-            <SimpleFormCreator title={"创建新房间"} formItems={FormItems} defaultValues={FormItemDefaultValues} finishFn={onFinish} />
+            <SimpleFormCreator title={"创建新房间"} formItems={FormItems} initialValues={FormItemDefaultValues} finishFn={onFinish} />
         </Drawer>,
 
     }
