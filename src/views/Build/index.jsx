@@ -12,6 +12,7 @@ import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { getAllBuild, addBuild, editBuild } from '../../api/build';
 import { commonRequest } from '../../util/request';
 import { buildNameFormItems, floorInfoNameItems } from './commonFn';
+import cloneDeep from 'lodash/cloneDeep';
 
 const FORM_TYPE = {
     BUILD_NAME: "BUILD_NAME",
@@ -37,12 +38,13 @@ export default function Build() {
     }, [isLoading]);
     const sendAddBuild = useCallback(async (form, closeForm) => {
         const data = form.getFieldsValue();
-        await commonRequest(
+        const ret = await commonRequest(
             { isLoading, setIsLoading },
             {
                 request: addBuild,
                 data,
             });
+        if (!ret) return;
         await getBuilds();
         closeForm();
     }, [isLoading,]);
@@ -50,14 +52,22 @@ export default function Build() {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
         const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, ["buildid", "name", "floorInfo", "__v"]);
-        await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        if (!ret) return;
         await getBuilds();
         closeForm();
     }, [builds, showBuildIndex, isLoading]);
 
-    const sendEditFloor = useCallback(async (form) => {
+    const sendEditFloor = useCallback(async (form, closeForm) => {
+        const formData = form.getFieldsValue();
+        const beforeBuildData = builds[showBuildIndex];
+        const wantBuildData = pick({ ...beforeBuildData, buildid: beforeBuildData._id, floorInfo: [...beforeBuildData.floorInfo, formData.floorName] });
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        if (!ret) return;
+        await getBuilds();
+        closeForm();
 
-    }, [builds, showBuildIndex]);
+    }, [builds, showBuildIndex, isLoading]);
 
     const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
         (formState, actions) => {
@@ -108,10 +118,6 @@ export default function Build() {
     useEffect(() => {
         getBuilds();
     }, []);
-
-    useEffect(() => {
-        console.log(formRef);
-    }, [formRef]);
 
     return (
         <ContentLayout Com={<div>
