@@ -86,7 +86,7 @@ export default function RoomList() {
             const { closeForm, addAndOpenForm, editAndOpenForm } = actions;
             if (isOpen === false) return {
                 initialValues: {},
-                formItems: {},
+                formItems: [],
             };
             if (editMode === FORM_OPEN_MODE.ADD) return {
                 initialValues: {},
