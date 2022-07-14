@@ -9,10 +9,14 @@ const addBuild = (data, config = {}) => simpleRequest.request({
 });
 
 //删除楼栋
-const delBuild = (data, config = {}) => simpleRequest.request({ url: "build/del", data, ...config });
+const delBuild = (data, config = {}) => simpleRequest.request({ 
+    url: "build/del", method: METHOD_TYPE.post, data, ...config 
+});
 
 //修改楼栋
-const editBuild = (data, config = {}) => simpleRequest.request({ url: "build/edit", data, ...config });
+const editBuild = (data, config = {}) => simpleRequest.request({ 
+    url: "build/edit",method: METHOD_TYPE.post,data, ...config 
+});
 
 export {
     getAllBuild, addBuild, delBuild, editBuild

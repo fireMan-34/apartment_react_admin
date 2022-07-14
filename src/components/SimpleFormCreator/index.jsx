@@ -5,13 +5,10 @@ import { Observe } from '../../util';
 import assignInWith from 'lodash/assignInWith';
 import isUndefined from 'lodash/isUndefined';
 
-const label = {
-    span: 8
-};
-const wrappelCol = {
-    span: 16
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
 }
-
 export const formType = {
     INPUT: "INPUT",
     BUTTON: "BUTTON",
@@ -27,8 +24,8 @@ export const rules = {
     required: { required: true },
     string: { type: "string" },
     number: { type: "number" },
-    stringAndNmber: { type: ["string,number"] },
-    stringMustNmber: { type: "string", pattern: /^\d+(.\d+)?$/, message: "输入字符串必须是数字类型且不包含任何运算符号" }
+    stringAndNmber: { type: ["string", "number"] },
+    stringMustNmber: { type: ["string"], pattern: /^\d+(.\d+)?$/, message: "输入字符串必须是数字类型且不包含任何运算符号" }
 }
 
 export const initValues = {
@@ -96,7 +93,7 @@ export default function SimpleFormCreator({ title, formItems, initialValues = {}
     }, [initialValues])
 
     return (
-        <Form form={form} layout={label} wrapperCol={wrappelCol} onFinish={onFinish}>
+        <Form form={form} {...layout} onFinish={onFinish}>
             <h2>{title}</h2>
             <hr />
             {formItems.map(({ label, name, rules, type, args }) => <Form.Item key={label + name} label={label} name={name} rules={rules}>{generateFormChildren(type, args)}</Form.Item>)}
@@ -104,6 +101,9 @@ export default function SimpleFormCreator({ title, formItems, initialValues = {}
             {!customizeFinish && <Form.Item>
                 <Button type='primary' htmlType='submit'>提交</Button>
             </Form.Item>}
+            {/* <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
+                <Input />
+            </Form.Item> */}
         </Form>
     )
 };

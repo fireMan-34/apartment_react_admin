@@ -21,10 +21,14 @@ const add${postfixStr} = (data, config = {}) => simpleRequest.request({
 });
 
 //删除${chineseInfoStr}
-const del${postfixStr} = (data, config = {}) => simpleRequest.request({ url: "${postfixApi}/del", data, ...config });
+const del${postfixStr} = (data, config = {}) => simpleRequest.request({ 
+    url: "${postfixApi}/del", method: METHOD_TYPE.post, data, ...config 
+});
 
 //修改${chineseInfoStr}
-const edit${postfixStr} = (data, config = {}) => simpleRequest.request({ url: "${postfixApi}/edit", data, ...config });
+const edit${postfixStr} = (data, config = {}) => simpleRequest.request({ 
+    url: "${postfixApi}/edit",method: METHOD_TYPE.post,data, ...config 
+});
 
 export {
     getAll${postfixStr}, add${postfixStr}, del${postfixStr}, edit${postfixStr}

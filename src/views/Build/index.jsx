@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { message, } from 'antd';
+import pick from 'lodash/pick';
 
 import './index.scss';
 import ContentLayout from '../../components/ContentLayout';
@@ -49,10 +50,15 @@ export default function Build() {
     const sendEditBuild = useCallback(async (form) => {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
-        const wantBuildData = { ...formData, ...beforeBuildData };
-        console.log("data", wantBuildData);
-        // await editBuild(wantBuildData);
+        const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, ["buildid", "name", "floorInfo", "__v"]);
+        console.log(wantBuildData);
+        await editBuild(wantBuildData);
     }, [builds, showBuildIndex]);
+
+    const sendEditFloor = useCallback(async (form) => {
+
+    }, [builds, showBuildIndex]);
+
     const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
         formState => {
             const { isOpen, editMode, formType } = formState;

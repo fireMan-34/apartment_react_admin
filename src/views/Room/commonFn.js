@@ -40,14 +40,14 @@ export const FormItems = [
     {
         label: "价格",
         name: "price",
-        rules: [rules.required, rules.stringAndNmber],
-        type: formType.INPUT,
+        rules: [rules.required],
+        type: formType.INPUT_NUMBER,
     },
     {
         label: "押金",
         name: "yaPrice",
-        rules: [rules.stringMustNmber],
-        type: formType.INPUT,
+        rules: [],
+        type: formType.INPUT_NUMBER,
         args: {
             placeholder: "填写押金"
         }
