@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { message, } from 'antd';
 import pick from 'lodash/pick';
 
 import './index.scss';
@@ -12,7 +11,6 @@ import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { getAllBuild, addBuild, editBuild } from '../../api/build';
 import { commonRequest } from '../../util/request';
 import { buildNameFormItems, floorInfoNameItems } from './commonFn';
-import cloneDeep from 'lodash/cloneDeep';
 
 const FORM_TYPE = {
     BUILD_NAME: "BUILD_NAME",

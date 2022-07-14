@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, Divider, Form, Input, InputNumber } from 'antd';
+import { Button, Divider, Form, Input, InputNumber, Cascader, Select, Radio } from 'antd';
 import { Observe } from '../../util';
 
 import assignInWith from 'lodash/assignInWith';
@@ -13,11 +13,19 @@ export const formType = {
     INPUT: "INPUT",
     BUTTON: "BUTTON",
     INPUT_NUMBER: "INPUT_NUMBER",
+    CASECADER: "CASECADER",
+    SELECT: "SELECT",
+    RADIO: "RADIO",
+    RADIO_GROUP: "RADIO_GROUP",
 }
 export const formTypeNode = {
     [formType.INPUT]: (args) => <Input {...args} />,
     [formType.Button]: (args) => <Button {...args} />,
-    [formType.INPUT_NUMBER]: (args) => <InputNumber {...args} />
+    [formType.INPUT_NUMBER]: (args) => <InputNumber {...args} />,
+    [formType.CASECADER]: (args) => <Cascader {...args} />,
+    [formType.SELECT]: (args) => <Select {...args} />,
+    [formType.RADIO]: (args) => <Radio {...args} />,
+    [formType.RADIO_GROUP]: (args) => <Radio.Group {...args} />,
 }
 
 export const rules = {
@@ -57,7 +65,7 @@ const generateFormChildren = (type, args) => {
     return formTypeNode[type](args);
 }
 
-export default function SimpleFormCreator({ title, formItems, initialValues = {}, finishFn, customizeFinish = false, customizeObserve }) {
+export default function SimpleFormCreator({ title, formItems, initialValues = {}, finishFn = sendData => { }, customizeFinish = false, customizeObserve }) {
     const [form] = Form.useForm();
     const onFinish = useCallback((values) => {
         const sendData = assignInWith(values, initialValues, (ov, sv) => isUndefined(ov) ? sv : ov);
@@ -101,9 +109,40 @@ export default function SimpleFormCreator({ title, formItems, initialValues = {}
             {!customizeFinish && <Form.Item>
                 <Button type='primary' htmlType='submit'>提交</Button>
             </Form.Item>}
-            {/* <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
-                <Input />
-            </Form.Item> */}
+            <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
+                <Cascader options={[{
+                    value: 'zhejiang',
+                    label: 'Zhejiang',
+                    children: [
+                        {
+                            value: 'hangzhou',
+                            label: 'Hangzhou',
+                            children: [
+                                {
+                                    value: 'xihu',
+                                    label: 'West Lake',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    value: 'jiangsu',
+                    label: 'Jiangsu',
+                    children: [
+                        {
+                            value: 'nanjing',
+                            label: 'Nanjing',
+                            children: [
+                                {
+                                    value: 'zhonghuamen',
+                                    label: 'Zhong Hua Men',
+                                },
+                            ],
+                        },
+                    ],
+                }]} />
+            </Form.Item>
         </Form>
     )
 };
