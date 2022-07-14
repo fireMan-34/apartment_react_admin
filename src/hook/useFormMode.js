@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const FORM_OPEN_MODE = {
     ADD: "ADD",
@@ -10,6 +10,12 @@ const FORM_ACTION = {
     CLOSE: "CLOSE",
 }
 const initFormState = { isOpen: false, editMode: FORM_OPEN_MODE.ADD, formType: "" };
+/**
+ * 
+ * @param {*} state 
+ * @param {*} action 
+ * @returns 
+ */
 const formReducer = (state, action) => {
     console.log(action);
     switch (action.type) {
@@ -30,18 +36,25 @@ const formReducer = (state, action) => {
  * closeForm:()=>action
  * addAndOpenForm:(formType)=>action
  * editAndOpenForm:(formType)=>action,
+ * formRef:{isOpen:boolean:editMode:"ADD"|"EDIT",formType:string,...}
  * }}
  */
-const useFormMode = () => {
+const useFormMode = (callback = formState => { }) => {
     const [formState, disPatchFormState] = useReducer(formReducer, initFormState);
+    const [cbState, setState] = useState(formState);
     useEffect(() => {
-        console.log(formState);
+        setState({
+            ...formState,
+            ...callback(formState),
+        });
     }, [formState]);
     return {
         formState,
         closeForm: () => disPatchFormState({ type: FORM_ACTION.CLOSE }),
         addAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.ADD_AND_OPEN, formType }),
-        editAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.EDIT_AND_OPEN, formType })
+        editAndOpenForm: (formType) => disPatchFormState({ type: FORM_ACTION.EDIT_AND_OPEN, formType }),
+        formRef: cbState,
+
     }
 };
 export { useFormMode, FORM_OPEN_MODE };

@@ -60,16 +60,16 @@ const generateFormChildren = (type, args) => {
     return formTypeNode[type](args);
 }
 
-export default function SimpleFormCreator({ defaultValues = {}, title, formItems, initialValues, finishFn, customizeFinish = false, customizeObserve }) {
+export default function SimpleFormCreator({ title, formItems, initialValues = {}, finishFn, customizeFinish = false, customizeObserve }) {
     const [form] = Form.useForm();
     const onFinish = useCallback((values) => {
-        const sendData = assignInWith(values, defaultValues, (ov, sv) => isUndefined(ov) ? sv : ov);
+        const sendData = assignInWith(values, initialValues, (ov, sv) => isUndefined(ov) ? sv : ov);
         finishFn(sendData);
     }, []);
 
     useEffect(() => {
         const checkcustomizeObserver = () => {
-            if (customizeFinish && !customizeObserve instanceof Observe) {
+            if (customizeFinish && !(customizeObserve instanceof Observe)) {
                 throw new TypeError('customizeObserve must be extend Observe');
             };
         }
@@ -87,15 +87,16 @@ export default function SimpleFormCreator({ defaultValues = {}, title, formItems
         };
     }, [form]);
 
+    // useEffect(() => {
+    // form.setFieldsValue(defaultValues);
+    // }, [defaultValues])
     useEffect(() => {
-        form.setFieldsValue(defaultValues);
-    }, [defaultValues])
-    useEffect(() => {
+        form.resetFields();
         form.setFieldsValue(initialValues);
     }, [initialValues])
 
     return (
-        <Form form={form} layout={label} wrapperCol={wrappelCol} onFinish={onFinish} initialValues={initialValues}>
+        <Form form={form} layout={label} wrapperCol={wrappelCol} onFinish={onFinish}>
             <h2>{title}</h2>
             <hr />
             {formItems.map(({ label, name, rules, type, args }) => <Form.Item key={label + name} label={label} name={name} rules={rules}>{generateFormChildren(type, args)}</Form.Item>)}

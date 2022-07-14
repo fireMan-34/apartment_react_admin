@@ -9,7 +9,7 @@ import BuildModel from './BuildModel';
 
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { getAllBuild, addBuild, editBuild } from '../../api/build';
-import { addBuildNameFormItems, editFloorInfoNameItems, editBuildNameFormItems } from './commonFn';
+import { buildNameFormItems, floorInfoNameItems } from './commonFn';
 
 const FORM_TYPE = {
     BUILD_NAME: "BUILD_NAME",
@@ -18,11 +18,9 @@ const FORM_TYPE = {
 
 export default function Build() {
     const [isLoading, setIsLoading] = useState(false);
-    const { formState, closeForm, addAndOpenForm, editAndOpenForm } = useFormMode();
-
     const [builds, setBuilds] = useState([]);
-    const [showBuildIndex, setShowBuildIndex] = useState(0);
 
+    const [showBuildIndex, setShowBuildIndex] = useState(0);
     const clickIndexFn = useCallback((id) => {
         const clickIndex = builds.findIndex(({ _id }) => _id === id);
         setShowBuildIndex(clickIndex);
@@ -47,30 +45,66 @@ export default function Build() {
         if (!success) return;
         await getBuilds();
         closeForm();
-    })
+    }, []);
+    const sendEditBuild = useCallback(async (form) => {
+        const formData = form.getFieldsValue();
+        const beforeBuildData = builds[showBuildIndex];
+        const wantBuildData = { ...formData, ...beforeBuildData };
+        console.log("data", wantBuildData);
+        // await editBuild(wantBuildData);
+    }, [builds, showBuildIndex]);
+    const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
+        formState => {
+            const { isOpen, editMode, formType } = formState;
+            if (isOpen === false) {
+                return {
+                    initialValues: {},
+                    formItems: {},
+                    submitFn: () => {
+                    }
+                }
+            }
+            if (editMode === FORM_OPEN_MODE.ADD) {
+                if (formType === FORM_TYPE.BUILD_NAME) {
+                    return {
+                        initialValues: {},
+                        formItems: buildNameFormItems,
+                        submitFn: sendAddBuild,
+                    }
+                }
+            }
+            if (editMode === FORM_OPEN_MODE.EDITE) {
+                if (formType === FORM_TYPE.BUILD_NAME) {
+                    return {
+                        initialValues: builds[showBuildIndex],
+                        formItems: buildNameFormItems,
+                        submitFn: sendEditBuild
+                    }
+                }
+                if (formType === FORM_TYPE.BUILD_FLOOR_INFO) {
+                    return {
+                        initialValues: {},
+                        formItems: floorInfoNameItems,
+                        submitFn: () => {
+                            console.log(`hello`);
+                        }
+                    }
+                }
+            }
+            throw new Error("form State is no support");
+
+        }
+    );
+
+
 
     useEffect(() => {
         getBuilds();
     }, []);
 
-    const getDefaultValues = useCallback(() => {
-        if (!formState.isOpen) return {};
-        if (formState.editMode === "ADD") return {};
-        if (formState.editMode === "EDIT" && formState.formType === FORM_TYPE.BUILD_NAME) return { ...builds[showBuildIndex] };
-        if (formState.editMode === "EDIT" && formState.formType === FORM_TYPE.BUILD_FLOOR_INFO) return { ...builds[showBuildIndex] };
-    }, [formState, builds, showBuildIndex]);
-    const getFormItems = useCallback(() => {
-        if (!formState.isOpen) return [];
-        if (formState.editMode === "ADD") return addBuildNameFormItems;
-        if (formState.editMode === "EDIT" && formState.formType === FORM_TYPE.BUILD_NAME) return editBuildNameFormItems;
-        if (formState.editMode === "EDIT" && formState.formType === FORM_TYPE.BUILD_FLOOR_INFO) return editFloorInfoNameItems;
-    }, [formState]);
-    const addBulidName = useCallback(async (form) => {
-        console.log(form);
-    }, []);
-    const editBuildName = useCallback(() => {
-
-    }, []);
+    useEffect(() => {
+        console.log(formRef);
+    }, [formRef]);
 
     return (
         <ContentLayout Com={<div>
@@ -89,11 +123,11 @@ export default function Build() {
             />
             <BuildModel
                 title={"noname"}
-                isOpen={formState.isOpen}
+                isOpen={formRef.isOpen}
                 onCancel={closeForm}
-                formItems={getFormItems()}
-                defaultValues={getDefaultValues()}
-                submitFn={sendAddBuild}
+                formItems={formRef.formItems}
+                initialValues={formRef.initialValues}
+                submitFn={formRef.submitFn}
             />
         </div>} />
     )

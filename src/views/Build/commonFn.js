@@ -1,6 +1,6 @@
 import { formType, rules } from '../../components/SimpleFormCreator';
 
-const addBuildNameFormItems = [
+const buildNameFormItems = [
     {
         label: "楼栋名",
         name: "name",
@@ -12,9 +12,8 @@ const addBuildNameFormItems = [
     },
 ];
 
-const editBuildNameFormItems = addBuildNameFormItems;
 
-const editFloorInfoNameItems = [
+const floorInfoNameItems = [
     {
         label: "楼层名",
         name: "floorName",
@@ -27,5 +26,5 @@ const editFloorInfoNameItems = [
 ]
 
 export {
-    addBuildNameFormItems, editBuildNameFormItems, editFloorInfoNameItems
+    buildNameFormItems, floorInfoNameItems
 }

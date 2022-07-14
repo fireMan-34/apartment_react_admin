@@ -20,6 +20,9 @@ class Observer {
     addRequest(request = data => { }) {
         this.requestWorks.add(request);
     }
+    removeRequest(request = data => { }) {
+        this.requestWorks.delete(request);
+    }
     request() {
         const data = this.observe.getData();
         this.requestWorks.forEach(request => request(data))

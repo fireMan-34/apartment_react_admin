@@ -5,7 +5,7 @@ import DelAlertPopconfirm from '../../components/DelAlertPopconfirm';
 const curryButton = (text, clickFn) => {
     return <Button type='primary' onClick={clickFn} size="small">{text}</Button>
 };
-const BuildInfoAndOperate = ({ build = {}, builds, addFloor, editAndOpenForm, editAndOpenFloorInfoForm, delBuild, isLoading }) => {
+const BuildInfoAndOperate = ({ build = {}, builds, editAndOpenForm, editAndOpenFloorInfoForm, delBuild, isLoading }) => {
     const buildName = build?.name || "楼信息";
     const buildCounts = builds?.length || 0;
     const buildFloorCounts = build.floorInfo?.length || 0;

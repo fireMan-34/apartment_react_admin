@@ -31,7 +31,7 @@ class Request {
         this.interceptors = config.interceptors;
         this.instance.interceptors.request.use(
             req => {
-                console.log('全局亲求拦截');
+                // console.log('全局亲求拦截');
                 return req;
             },
             error => error
@@ -47,7 +47,7 @@ class Request {
         )
         this.instance.interceptors.response.use(
             res => {
-                console.log(`全局响应器`);
+                // console.log(`全局响应器`);
                 return res.data;
             })
     }
