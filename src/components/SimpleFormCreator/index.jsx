@@ -109,40 +109,9 @@ export default function SimpleFormCreator({ title, formItems, initialValues = {}
             {!customizeFinish && <Form.Item>
                 <Button type='primary' htmlType='submit'>提交</Button>
             </Form.Item>}
-            <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
-                <Cascader options={[{
-                    value: 'zhejiang',
-                    label: 'Zhejiang',
-                    children: [
-                        {
-                            value: 'hangzhou',
-                            label: 'Hangzhou',
-                            children: [
-                                {
-                                    value: 'xihu',
-                                    label: 'West Lake',
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    value: 'jiangsu',
-                    label: 'Jiangsu',
-                    children: [
-                        {
-                            value: 'nanjing',
-                            label: 'Nanjing',
-                            children: [
-                                {
-                                    value: 'zhonghuamen',
-                                    label: 'Zhong Hua Men',
-                                },
-                            ],
-                        },
-                    ],
-                }]} />
-            </Form.Item>
+            {/* <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
+
+            </Form.Item> */}
         </Form>
     )
 };

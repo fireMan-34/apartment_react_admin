@@ -134,17 +134,20 @@ const roomItems = [
     {
         label: "是否靠近马路",
         name: "isClose2Road",
-        ...RADIO_GROUP_BOOLEAN_SELECT
+        ...RADIO_GROUP_BOOLEAN_SELECT,
+        rules: [rules.required]
     },
     {
         label: "是否是噪音房",
         name: "isNoise",
-        ...RADIO_GROUP_BOOLEAN_SELECT
+        ...RADIO_GROUP_BOOLEAN_SELECT,
+        rules: [rules.required]
     },
     {
         label: "是否是高温房",
         name: "isHigh",
-        ...RADIO_GROUP_BOOLEAN_SELECT
+        ...RADIO_GROUP_BOOLEAN_SELECT,
+        rules: [rules.required]
     }
 
 ];

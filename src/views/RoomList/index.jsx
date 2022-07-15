@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Button, Space, Table, Drawer, Skeleton } from 'antd';
 
 import './index.scss'
@@ -6,7 +6,7 @@ import ContentLayout from '../../components/ContentLayout';
 import SimpleFormCreator from '../../components/SimpleFormCreator';
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { commonRequest } from '../../util/request';
-import { getAllRoom, editRoom, delRoom } from '../../api/room';
+import { getAllRoom, addRoom, editRoom, delRoom } from '../../api/room';
 import { getAllBuild } from '../../api/build';
 import { getAllType } from '../../api/roomType';
 import { colums, roomItems } from './commonFn';
@@ -30,7 +30,8 @@ export default function RoomList() {
         setRoomDataMapKey(roomData.map(room => ({ ...room, key: room._id })))
     }, [roomData]);
     const [builds, setBuilds] = useState([]);
-    const [types, setTypes] = useState([])
+    const [types, setTypes] = useState([]);
+    const tableRef = useRef({});
     const getAllRoomWithEffect = useCallback(async () => {
         const ret = await commonRequest({ isLoading, setIsLoading },
             { request: getAllRoom, });
@@ -38,7 +39,7 @@ export default function RoomList() {
         const { data } = ret;
         setRoomData(data);
         return Promise.resolve(data);
-    }, []);
+    }, [isLoading]);
     const getBuildsWithEffect = useCallback(async () => {
         const ret = await commonRequest({ isLoading, setIsLoading },
             { request: getAllBuild });
@@ -60,7 +61,7 @@ export default function RoomList() {
         const types = data.map(item => ({ label: item.name, value: item._id }));
         setTypes(types);
         return Promise.resolve(data);
-    }, [])
+    }, []);
     useEffect(() => {
         const asyncWork = [getAllRoomWithEffect, getBuildsWithEffect, getTypesWithEffect];
         const FirstLoadingWithEffect = async (asyncWork = [], tryCount = 0, onSuccess) => {
@@ -79,14 +80,36 @@ export default function RoomList() {
     }, []);
 
 
+    const submitAddRoomList = useCallback(async (formData, closeForm) => {
+        const [buildId, floor] = formData.bandf;
+        const transformData = { ...formData, buildId: buildId, floor: floor };
+
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: transformData, request: addRoom });
+        if (!ret) return;
+        const ret1 = await getAllRoomWithEffect();
+        if (!ret1) return;
+        closeForm();
+
+    }, [isLoading]);
+    const editAddRoomList = useCallback(async (formData, closeForm) => {
+        const [buildId, floor] = formData.bandf;
+        const transformData = { ...formData, buildId: buildId, floor: floor };
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: transformData, request: editRoom });
+        if (!ret) return;
+        const ret1 = await getAllRoomWithEffect();
+        if (!ret1) return;
+        closeForm();
+    });
     const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
         (formState, actions) => {
-            const { isOpen, editMode, formType } = formState;
-            const { closeForm, addAndOpenForm, editAndOpenForm } = actions;
+            const { isOpen, editMode, } = formState;
+            const { closeForm, } = actions;
             if (isOpen === false) return {
                 initialValues: {},
                 formItems: [],
-                finishFn: () => []
+                finishFn: () => {
+                    console.log("ok");
+                }
             };
             if (editMode === FORM_OPEN_MODE.ADD) return {
                 initialValues: {},
@@ -100,10 +123,10 @@ export default function RoomList() {
                         default: return roomItem;
                     }
                 }),
-                finishFn: () => { }
+                finishFn: (...args) => submitAddRoomList(...args, closeForm)
             };
             if (editMode === FORM_OPEN_MODE.EDITE) return {
-                initialValues: {},
+                initialValues: tableRef.current,
                 formItems: roomItems.map(roomItem => {
                     const { label } = roomItem;
                     switch (label) {
@@ -114,17 +137,19 @@ export default function RoomList() {
                         default: return roomItem;
                     }
                 }),
-                finishFn: () => { }
+                finishFn: (...args) => editAddRoomList(...args, closeForm),
             }
         }
     );
     const openRoomFormClick = useCallback(() => addAndOpenForm(FORM_TYPE.ROOM), []);
-    const editRoomItemClick = useCallback(() => editAndOpenForm(FORM_TYPE.ROOM), [roomData,]);
+    const editRoomItemClick = useCallback((row) => {
+        tableRef.current = { ...row, bandf: [row.buildId, row.floor,].filter(Boolean), roomid: row._id };
+        editAndOpenForm(FORM_TYPE.ROOM);
+    }, [roomData,]);
     const deleRoomItemClick = useCallback(async (roomid) => {
-        console.log(roomid);
         const ret = await commonRequest({ isLoading, setIsLoading }, { data: { roomid }, request: delRoom });
-        // if (!ret) return;
-        // await getAllRoomWithEffect();
+        if (!ret) return;
+        await getAllRoomWithEffect();
     }, [roomData, isLoading,]);
     const columnsMemo = useMemo(() => colums(deleRoomItemClick, editRoomItemClick,), []);
     return (
