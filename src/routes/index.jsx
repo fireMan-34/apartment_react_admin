@@ -18,6 +18,7 @@ const frameOut = [
     { path: "/go", element: <Go /> },
 ];
 
+//从角度上看，我们可以把路由组件放在Layout里面进行劫持跳转
 const frameIn = [
     { path: "index", element: <Home /> },
     { path: "setroom", element: <Room /> },
