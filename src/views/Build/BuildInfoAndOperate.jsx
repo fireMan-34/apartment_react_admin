@@ -19,7 +19,7 @@ const BuildInfoAndOperate = ({ build = {}, builds, editAndOpenForm, editAndOpenF
                 [
                     curryButton("增加楼层", editAndOpenFloorInfoForm),
                     curryButton("修改楼栋名", editAndOpenForm),
-                    <DelAlertPopconfirm Com={curryButton("删除")} onConfirm={delBuild} />
+                    <DelAlertPopconfirm Com={curryButton("删除")} onConfirm={() => delBuild(build._id)} />
                 ]}
             hoverable>
             <Space direction="vertical" size={"middle"} style={{ display: "flex" }}>

@@ -2,10 +2,10 @@ import React, { useCallback } from 'react'
 import { Menu, Avatar } from 'antd';
 
 import { useSelector, useDispatch, } from 'react-redux';
-import { setCurMenu } from '../../store/commonSlice';
-
 import { useNavigate, useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+import { setCurMenu } from '../../store/commonSlice';
 import { getTransformMenu } from './commonFn';
 
 
@@ -19,8 +19,6 @@ export default function HeaderNav() {
     const dispatch = useDispatch();
 
     const items = getTransformMenu(menu);
-
-    console.log(menu);
 
     const clickItems = useCallback(({ key }) => {
         dispatch(setCurMenu(key));
@@ -38,4 +36,4 @@ export default function HeaderNav() {
             <Menu items={items} mode="horizontal" theme='dark' onClick={clickItems} />
         </div>
     )
-}
+};

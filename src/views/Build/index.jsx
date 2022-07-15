@@ -8,7 +8,7 @@ import BuildInfoAndOperate from './BuildInfoAndOperate';
 import BuildModel from './BuildModel';
 
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
-import { getAllBuild, addBuild, editBuild } from '../../api/build';
+import { getAllBuild, addBuild, editBuild, delBuild } from '../../api/build';
 import { commonRequest } from '../../util/request';
 import { buildNameFormItems, floorInfoNameItems } from './commonFn';
 
@@ -56,6 +56,11 @@ export default function Build() {
         await getBuilds();
         closeForm();
     }, [builds, showBuildIndex, isLoading]);
+    const sendDeleteBuild = useCallback(async (buildid) => {
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: { buildid }, request: delBuild });
+        if (!ret) return;
+        await getBuilds();
+    }, [isLoading]);
 
     const sendEditFloor = useCallback(async (form, closeForm) => {
         const formData = form.getFieldsValue();
@@ -130,6 +135,7 @@ export default function Build() {
                 isLoading={isLoading}
                 editAndOpenForm={() => editAndOpenForm(FORM_TYPE.BUILD_NAME)}
                 editAndOpenFloorInfoForm={() => editAndOpenForm(FORM_TYPE.BUILD_FLOOR_INFO)}
+                delBuild={sendDeleteBuild}
             />
             <BuildModel
                 title={"noname"}
