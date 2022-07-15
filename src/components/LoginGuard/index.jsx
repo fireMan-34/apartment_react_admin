@@ -11,9 +11,9 @@ const withLoginGuard = (Com) => {
 };
 const LoginGuard = ({ Com, Jsx }) => {
     // console.log(Com, Jsx);
-    // if (Com) return <Com />;
-    // if(Jsx)return{jsx}
+    // if (Com) return <Com />;{Com}
     const adminInfo = useSelector(state => state.admin.adminInfo);
-    if (!adminInfo) return <Navigate to={"/login"} />
+    if (!adminInfo) return <Navigate to={"/login"} state={{ from: "/index" }} />
+    return <Com />
 };
 export { withLoginGuard, LoginGuard }

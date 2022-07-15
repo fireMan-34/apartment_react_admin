@@ -107,7 +107,7 @@ export default function SimpleFormCreator({ title, formItems, initialValues = {}
             {formItems.map(({ label, name, rules, type, args }) => <Form.Item key={label + name} label={label} name={name} rules={rules}>{generateFormChildren(type, args)}</Form.Item>)}
             <Divider>分割</Divider>
             {!customizeFinish && <Form.Item>
-                <Button type='primary' htmlType='submit'>提交</Button>
+                <Button type="dashed" htmlType='submit'>Login</Button>
             </Form.Item>}
             {/* <Form.Item label="TesT" name={"Test"} rules={[{ type: ["number", "string"] }]}>
 
