@@ -51,7 +51,7 @@ export default function Build() {
         const formData = form.getFieldsValue();
         const beforeBuildData = builds[showBuildIndex];
         const wantBuildData = pick({ ...beforeBuildData, ...formData, buildid: beforeBuildData._id }, allowKeys);
-        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData });
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: wantBuildData, request: editBuild });
         if (!ret) return;
         await getBuilds();
         closeForm();
@@ -76,7 +76,7 @@ export default function Build() {
     const { closeForm, addAndOpenForm, editAndOpenForm, formRef } = useFormMode(
         (formState, actions) => {
             const { isOpen, editMode, formType } = formState;
-            const { closeForm, addAndOpenForm, editAndOpenForm } = actions;
+            const { closeForm, } = actions;
             if (isOpen === false) {
                 return {
                     initialValues: {},
