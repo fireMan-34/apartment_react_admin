@@ -2,7 +2,7 @@ import { Tag, Button } from 'antd';
 
 import { rules, formType } from '../../components/SimpleFormCreator';
 
-const colums = (function () {
+const colums = function (handlerDel, openEdit) {
     return [
         { title: '房间名称', key: 'roomName' },
         { title: '楼层', key: 'floor' },
@@ -49,7 +49,7 @@ const colums = (function () {
             }
         }
     ].map(o => ({ ...o, dataIndex: o.key }));
-})();
+};
 const mockDataSorce = [
     {
         key: "______",

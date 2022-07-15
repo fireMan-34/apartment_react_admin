@@ -6,7 +6,7 @@ import ContentLayout from '../../components/ContentLayout';
 import SimpleFormCreator from '../../components/SimpleFormCreator';
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { commonRequest } from '../../util/request';
-import { getAllRoom } from '../../api/room';
+import { getAllRoom, editRoom, delRoom } from '../../api/room';
 import { getAllBuild } from '../../api/build';
 import { getAllType } from '../../api/roomType';
 import { colums, roomItems } from './commonFn';
@@ -24,14 +24,13 @@ const FORM_TYPE = {
 export default function RoomList() {
     const [isLoading, setIsLoading] = useState(false);
     const [hasfirstLoading, setHasFirstLoading] = useState(false);
-    const columnsMemo = useMemo(() => colums, []);
     const [roomData, setRoomData] = useState([]);
     const [roomDataMapKey, setRoomDataMapKey] = useState([]);
-    const [builds, setBuilds] = useState([]);
-    const [types, setTypes] = useState([])
     useEffect(() => {
         setRoomDataMapKey(roomData.map(room => ({ ...room, key: room._id })))
     }, [roomData]);
+    const [builds, setBuilds] = useState([]);
+    const [types, setTypes] = useState([])
     const getAllRoomWithEffect = useCallback(async () => {
         const ret = await commonRequest({ isLoading, setIsLoading },
             { request: getAllRoom, });
@@ -87,6 +86,7 @@ export default function RoomList() {
             if (isOpen === false) return {
                 initialValues: {},
                 formItems: [],
+                finishFn: () => []
             };
             if (editMode === FORM_OPEN_MODE.ADD) return {
                 initialValues: {},
@@ -100,10 +100,33 @@ export default function RoomList() {
                         default: return roomItem;
                     }
                 }),
+                finishFn: () => { }
+            };
+            if (editMode === FORM_OPEN_MODE.EDITE) return {
+                initialValues: {},
+                formItems: roomItems.map(roomItem => {
+                    const { label } = roomItem;
+                    switch (label) {
+                        case "所在楼栋楼层":
+                            return { ...roomItem, args: { ...roomItem.args, options: builds } };
+                        case "选择房型":
+                            return { ...roomItem, args: { ...roomItem.args, options: types } };
+                        default: return roomItem;
+                    }
+                }),
+                finishFn: () => { }
             }
         }
     );
     const openRoomFormClick = useCallback(() => addAndOpenForm(FORM_TYPE.ROOM), []);
+    const editRoomItemClick = useCallback(() => editAndOpenForm(FORM_TYPE.ROOM), [roomData,]);
+    const deleRoomItemClick = useCallback(async (roomid) => {
+        console.log(roomid);
+        const ret = await commonRequest({ isLoading, setIsLoading }, { data: { roomid }, request: delRoom });
+        // if (!ret) return;
+        // await getAllRoomWithEffect();
+    }, [roomData, isLoading,]);
+    const columnsMemo = useMemo(() => colums(deleRoomItemClick, editRoomItemClick,), []);
     return (
         <ContentLayout Com={<div>
             <Space style={{ display: "flex" }} direction={"vertical"} size="large">
@@ -111,7 +134,7 @@ export default function RoomList() {
                 <Table columns={columnsMemo} dataSource={roomDataMapKey} />
             </Space>
             <Drawer visible={formRef.isOpen} onClose={() => closeForm()}>
-                {hasfirstLoading ? <SimpleFormCreator formItems={formRef.formItems} /> : <Skeleton active />}
+                {hasfirstLoading ? <SimpleFormCreator initialValues={formRef.initialValues} formItems={formRef.formItems} finishFn={formRef.finishFn} /> : <Skeleton active />}
             </Drawer>
         </div>} />
     )
