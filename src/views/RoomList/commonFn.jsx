@@ -132,6 +132,11 @@ const roomItems = [
         ...RADIO_GROUP_BOOLEAN_SELECT
     },
     {
+        label: "是否有允许吸烟",
+        name: "isSmoke",
+        ...RADIO_GROUP_BOOLEAN_SELECT
+    },
+    {
         label: "是否靠近马路",
         name: "isClose2Road",
         ...RADIO_GROUP_BOOLEAN_SELECT,
