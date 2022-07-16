@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { Button, Drawer, Table, message, Popconfirm } from "antd";
+import { Button, Drawer, Table, message, } from "antd";
 
 import SimpleFormCreator from '../../components/SimpleFormCreator';
 import DelAlertPopconfirm from '../../components/DelAlertPopconfirm';
+import ExportTable from '../../components/ExportTable';
 import { FormItems, FormItemDefaultValues } from './commonFn';
 
 import { getAllType, editType, delType } from '../../api/roomType';
@@ -14,7 +15,6 @@ const curryButton = ({ name, click }) => <Button type="dashed" size="small" onCl
 export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
 
     const [data, setData] = useState([]);
-    // const [isLoading, setIsLoading] = useState(false);
     const [IsOpen, setIsOpen] = useState(false);
     const [formData, setFormData] = useState({});
     const onClose = () => setIsOpen(v => false);
@@ -109,16 +109,27 @@ export default function useGetControlRoomTable({ isLoading, setIsLoading, }) {
             }
         ]
     );
+    useEffect(() => {
+        console.log(data);
+    }, [formData, data]);
 
     useEffect(() => {
         getAllTypeRequest();
     }, []);
 
     return {
-        Room_Table: (<Table dataSource={data} columns={colums} loading={isLoading}></Table>),
+        Room_Table: (<Table dataSource={data} columns={colums} loading={isLoading} footer={data => {
+            console.log("footer", data)
+            return <div>123</div>
+        }}></Table>),
         Room_Update_Form: (<Drawer visible={IsOpen} onClose={onClose}>
             <SimpleFormCreator title={"更新房间"} formItems={FormItems} initialValues={{ ...FormItemDefaultValues, ...formData }} finishFn={editTypeRequest} />
         </Drawer>),
+        Room_Table_Down: (<ExportTable
+            colums={colums.filter(colum => colum.title !== "操作")}
+            data={data}
+            fileName={"房型维护.xlsx"}
+        />),
         Renew_Data: getAllTypeRequest
     }
 };

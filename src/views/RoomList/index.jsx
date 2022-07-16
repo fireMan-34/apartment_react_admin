@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
-import { Button, Space, Table, Drawer, Skeleton } from 'antd';
+import { Button, Space, Table, Drawer, Skeleton, Divider } from 'antd';
 
 import './index.scss'
 import ContentLayout from '../../components/ContentLayout';
 import SimpleFormCreator from '../../components/SimpleFormCreator';
+import ExportTable from '../../components/ExportTable';
+
 import { useFormMode, FORM_OPEN_MODE } from '../../hook/useFormMode';
 import { commonRequest } from '../../util/request';
 import { getAllRoom, addRoom, editRoom, delRoom } from '../../api/room';
@@ -18,9 +20,15 @@ Array.prototype.arrayWithEffect = function (effectFn = arr => arr) {
     effectFn(this);
     return this;
 };
+
 const FORM_TYPE = {
     ROOM: "ROOM"
+};
+
+const curryDiver = (text) => {
+    return <Divider>{text}</Divider>
 }
+
 export default function RoomList() {
     const [isLoading, setIsLoading] = useState(false);
     const [hasfirstLoading, setHasFirstLoading] = useState(false);
@@ -156,7 +164,7 @@ export default function RoomList() {
         <ContentLayout Com={<div>
             <Space style={{ display: "flex" }} direction={"vertical"} size="large">
                 <Button onClick={openRoomFormClick}>添加房间</Button>
-                <Table columns={columnsMemo} dataSource={roomDataMapKey} />
+                <Table columns={columnsMemo} dataSource={roomDataMapKey} footer={(args) => <ExportTable colums={columnsMemo.filter(colum => colum.title !== "操作")} data={roomDataMapKey} fileName={"房间列表.xlsx"} />} />
             </Space>
             <Drawer visible={formRef.isOpen} onClose={() => closeForm()}>
                 {hasfirstLoading ? <SimpleFormCreator initialValues={formRef.initialValues} formItems={formRef.formItems} finishFn={formRef.finishFn} /> : <Skeleton active />}

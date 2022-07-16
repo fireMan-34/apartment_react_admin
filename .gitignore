@@ -26,3 +26,4 @@ dist-ssr
 # person
 study
 types
+.nyc_output
