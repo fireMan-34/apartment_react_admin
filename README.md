@@ -43,3 +43,25 @@ ____
 - 解释器以及处理器的写法
 - useHook深入学习
 - redux学习
+## 不足
+- 长文本意识
+- 英文水平
+- 设计模式不足
+____
+
+# 目前现状（joke）
+```mermaid
+flowchart TD
+    Zero[find A Work]
+    A[hasWork?]
+    B[noWork]
+    C[how to Solve]
+    D[work]
+    E[End]
+    Zero-->A
+    A-->|yes| D
+    A-->|no| B
+    D-->E
+    B-->C-->A-->F[????]
+
+```
